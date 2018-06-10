@@ -11,26 +11,55 @@ namespace TodoApi.Controllers
     [ApiController]
     public class PetsController : ControllerBase
     {
-        private PetContext _context;
+        private PetStoreContext _storeContext;
 
-        public PetsController(PetContext context)
+        public PetsController(PetStoreContext storeContext)
         {
-            _context = context;
-            if (_context.Pets.Count() == 0)
+            _storeContext = storeContext;
+            if (_storeContext.Pets.Count() == 0)
             {
-                _context.Pets.Add(new Pet { Name = "Cat", Owner = "CatWomen", Family = "CatWomen" });
-                _context.SaveChanges();
+                _storeContext.Pets.Add(new Pet { Name = "Cat", Family = "CatWomen" });
+                _storeContext.SaveChanges();
             }
 
         }
 
-
-
         [HttpGet]
         public ActionResult<List<Pet>> GetAllPets()
         {
-            return _context.Pets.ToList();
-
+            return _storeContext.Pets.ToList();
         }
+
+        [HttpGet("{id}", Name = "GetPet")]
+        public ActionResult<Pet> GetById(long id)
+        {
+            return _storeContext.Pets.Find(id);
+        }
+
+        [HttpPost]
+        public IActionResult Create(Pet pet)
+        {
+            _storeContext.Pets.Add(pet);
+            _storeContext.SaveChanges();
+
+            return CreatedAtRoute("GetPet", new { id = pet.Id }, pet);
+        }
+
+
+        [HttpDelete("{id}")]
+        public IActionResult DeletePet(long id)
+        {
+            var pet = _storeContext.Pets.Find(id);
+            if (pet == null)
+            {
+                return NotFound();
+            }
+
+            _storeContext.Pets.Remove(pet);
+            _storeContext.SaveChanges();
+            return NoContent();
+        }
+
+
     }
 }

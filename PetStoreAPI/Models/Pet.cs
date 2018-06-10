@@ -10,7 +10,6 @@ namespace PetStoreAPI.Models
         public long Id { get; set; }
         public string Name { set; get; }
         public string Family { set; get; }
-        public string Owner { set; get; }
 
     }
 }

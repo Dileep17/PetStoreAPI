@@ -28,7 +28,7 @@ namespace PetStoreAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<PetContext>(options =>
+            services.AddDbContext<PetStoreContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
 

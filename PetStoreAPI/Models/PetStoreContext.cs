@@ -2,13 +2,15 @@
 
 namespace PetStoreAPI.Models
 {
-    public class PetContext : DbContext
+    public class PetStoreContext : DbContext
     {
-        public PetContext(DbContextOptions<PetContext> options)
+        public PetStoreContext(DbContextOptions<PetStoreContext> options)
             : base(options)
         {
         }
 
         public DbSet<Pet> Pets { get; set; }
+        public DbSet<Owner> Owners { get; set; }
     }
+
 }
