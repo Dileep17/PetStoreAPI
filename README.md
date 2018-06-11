@@ -1,10 +1,14 @@
 # PetStoreAPI
 A sample project to spike TestServer for Integration Test .Net core WebAPI. 
+
 a. Tests in TestsWithDB folder use same config as specified for PetStoreAPI project
+
 b. Tests in InMemoryTest folder in memory DB
+
 c. Tests in MockTests folder use same config as specified for PetStoreAPI project and uses Stubbery library to mock external service calls
 
 
+Steps to run tests
 1. Install Postgres DB and create "PetStore" Database
 2. Create Tables as below
 
