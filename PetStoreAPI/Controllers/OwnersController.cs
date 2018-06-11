@@ -28,14 +28,14 @@ namespace PetStoreAPI.Controllers
 
         // GET: api/<controller>
         [HttpGet]
-        public ActionResult<List<Owner>> GetAllOwners()
+        public ActionResult<List<Owner>> Get()
         {
             return _storeContext.Owners.ToList();
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}", Name = "GetOwner")]
-        public ActionResult<Owner> Get(int id)
+        public ActionResult<Owner> GetById(int id)
         {
             var owner = _storeContext.Owners.Find(id);
             if (owner == null)

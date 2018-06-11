@@ -8,12 +8,12 @@ using NUnit.Framework;
 
 namespace IntegrationTest
 {
-//    [TestFixture]
+   [TestFixture]
     public class PetTests
     {
         private HttpClient _client;
 
-//        [SetUp]
+        [SetUp]
         public void SetUp()
         {
             string curDir = Directory.GetCurrentDirectory();
@@ -34,7 +34,7 @@ namespace IntegrationTest
         }
 
 
-//        [Test]
+        [Test]
         public void CreatePet()
         {
             var newPet = "{'Name' : 'yamaha', 'Family' : 'Wolf'}";
@@ -45,7 +45,7 @@ namespace IntegrationTest
             Console.WriteLine(res);
         }
 
-//        [Test]
+        [Test]
         public void GetPets()
         {
             var response = _client.GetAsync("api/pets").Result;

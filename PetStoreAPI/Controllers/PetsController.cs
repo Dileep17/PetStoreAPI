@@ -5,27 +5,27 @@ using PetStoreAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace TodoApi.Controllers
+namespace PetStoreAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class PetsController : ControllerBase
     {
         private PetStoreContext _storeContext;
-
+        
         public PetsController(PetStoreContext storeContext)
         {
             _storeContext = storeContext;
             if (_storeContext.Pets.Count() == 0)
             {
-                _storeContext.Pets.Add(new Pet { Name = "Cat", Family = "CatWomen" });
+                _storeContext.Pets.Add(new Pet { Name = "Cat", Family = "Cat" });
                 _storeContext.SaveChanges();
             }
 
         }
 
         [HttpGet]
-        public ActionResult<List<Pet>> GetAllPets()
+        public ActionResult<List<Pet>> Get()
         {
             return _storeContext.Pets.ToList();
         }
@@ -47,7 +47,7 @@ namespace TodoApi.Controllers
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeletePet(long id)
+        public IActionResult Delete(long id)
         {
             var pet = _storeContext.Pets.Find(id);
             if (pet == null)
