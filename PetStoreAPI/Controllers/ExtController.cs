@@ -13,22 +13,18 @@ namespace PetStoreAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExtController : Controller
+    public class ExtController : ControllerBase
     {
 
         private readonly IConfiguration configuration;
 
         public ExtController(IConfiguration configuration)
         {
-//            var builder = new ConfigurationBuilder()
-//                .SetBasePath(Directory.GetCurrentDirectory())
-//                .AddJsonFile("appsettings.json");
             this.configuration = configuration; 
         }
 
 
         [HttpGet("{id}")]
-        [HttpGet]
         public string GetById(int id)
         {
             HttpClient client = new HttpClient();
