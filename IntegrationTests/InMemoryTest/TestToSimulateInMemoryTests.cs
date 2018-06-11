@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Net.Http;
+using IntegrationTest.InMemoryTest;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 
-namespace IntegrationTest.InMemoryTest
+namespace IntegrationTests.InMemoryTest
 {
     [TestFixture]
-    class InMemoryPetTest
+    class TestToSimulateInMemoryTests
     {
         private  HttpClient _client;
         private  CustomWebApplicationFactory<PetStoreAPI.Startup> _factory;

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Net;
 using System.Net.Http;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
 using NUnit.Framework;
 using PetStoreAPI;
 using Stubbery;
 
-namespace IntegrationTest
+namespace IntegrationTests.MockTests
 {
     [TestFixture]
-    public class ExtTest
+    public class TestsToSimulateMockingExternalServiceCalls
     {
         private HttpClient _client;
 
@@ -42,7 +41,6 @@ namespace IntegrationTest
 
             var host = WebHost.CreateDefaultBuilder()
                 .UseStartup<Startup>();
-
             if (userApiStub != null)
             {
                 host.ConfigureAppConfiguration((ctx, b) =>
@@ -57,14 +55,12 @@ namespace IntegrationTest
                     });
                 });
             }
-
             var server = new TestServer(host);
-
             return server;
         }
 
         [Test]
-        public void TestExtAPIMocked()
+        public void GetUserTestWithExternalDependencyMocked()
         {
             var stub = StartStub();
             var server = StartApiUnderTest(stub);
@@ -73,10 +69,22 @@ namespace IntegrationTest
             Console.WriteLine("Status code of /ext = " + response.StatusCode);
             string res = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine(res);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Test]
-        public void TestExtAPINotMocked()
+        public void GetUserTestWithExternalDependencyMockedToRespondError()
+        {
+            var stub = StartStub();
+            var server = StartApiUnderTest(stub);
+            _client = server.CreateClient();
+            var response = _client.GetAsync("/api/ext/5").Result;
+            Console.WriteLine("Status code of /ext = " + response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+        }
+
+        [Test]
+        public void GetUserTestWithOutMockingExternalDependency()
         {
             var server = StartApiUnderTest();
             _client = server.CreateClient();
@@ -84,6 +92,21 @@ namespace IntegrationTest
             Console.WriteLine("Status code of /ext = " + response.StatusCode);
             string res = response.Content.ReadAsStringAsync().Result;
             Console.WriteLine(res);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        }
+
+
+        [Test]
+        public void CreatePetTest()
+        {
+            var server = StartApiUnderTest();
+            _client = server.CreateClient();
+            var newPet = "{'Name' : 'Cruel', 'Family' : 'crow'}";
+            var datatoPost = new StringContent(newPet.ToString(), System.Text.Encoding.UTF8, "application/json");
+            var response = _client.PostAsync("api/pets", datatoPost).Result;
+            string responseString = response.Content.ReadAsStringAsync().Result;
+            Console.WriteLine(responseString);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
         }
 
     }
