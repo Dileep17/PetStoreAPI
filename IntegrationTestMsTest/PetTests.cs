@@ -33,7 +33,6 @@ namespace IntegrationTest
             _client = testServer.CreateClient();
         }
 
-
         [Test]
         public void CreatePet()
         {
